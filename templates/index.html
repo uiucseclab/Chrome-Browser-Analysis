@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta content="initial-scale=1, shrink-to-fit=no, width=device-width" name="viewport">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Canal</title>
+        <meta name="description" content="">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename="datatables.min.css") }}">
+        <script type="text/javascript" src="{{ url_for('static', filename="datatables.min.js") }}"></script>
+    </head>
+    <body>
+        <select onchange="update_table(this.value)" id="select">
+            <option value="/history">History</option>
+            <option value="/searches">Search History</option>
+            <option value="/cookies">Cookies</option>
+            <option value="/downloads">Downloads</option>
+            <option value="/autofill">Autofill</option>
+            <option value="/autofill_profiles">Autofill Profiles</option>
+            <option value="/credit_cards">Credit Cards</option>
+        </select>
+        <div style="width: 99vw; height: 95vh;">
+            <table id="data-table" class="display">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <script type="text/javascript" charset="utf-8">
+
+
+         function update_table(route) {
+             fetch(route).then(function(response) {
+                 return response.json();
+             }).then(function(data) {
+                 columnData = data[0];
+                 /* var columnData = [];
+                  * for (var i = 0; i < data[0].length; i++) {
+                  *     columnData.push({data: data[0][i], title: data[0][i]});
+                  * } */
+                 data = data.slice(1);
+
+                 if ($.fn.dataTable.isDataTable('#data-table')) {
+                     table = $('#data-table').DataTable();
+                     table.destroy(false);
+                     $('#data-table').empty();
+                 }
+
+                 console.log(columnData);
+
+                 table = $('#data-table').DataTable( {
+                     data: data,
+                     columns: columnData,
+                     scrollX: true,
+                     scrollY: true,
+                     autoWidth: false,
+                     responsive: true
+                     /* select: true */
+                 });
+                 table.columns.adjust().draw();
+             })
+         }
+
+         $(document).ready( function() {
+             update_table(document.querySelector('#select').value)
+         });
+        </script>
+    </body>
+</html>

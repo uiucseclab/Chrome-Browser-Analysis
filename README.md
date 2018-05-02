@@ -183,7 +183,9 @@ and the script can be launched with `python info.py <chrome_path>`. This script
 will serve a web application on localhost port 5000 by default. Going there
 gives you an interface to see a ton of forensically interesting artifcats. This
 includes all the data available pertaining to the user's history, searches,
-cookies, downloads, autfill data, credit cards, and autofill profiles.
+cookies, downloads, autfill data, credit cards, and autofill profiles. This
+script has only been tested on Ubuntu but should, in theory, work on any OS. If
+you can't get it to work try it on Linux.
 
 # cache.py
 `cache.py` is run the same way as `info.py` and depends on python3. When ran it
@@ -191,7 +193,8 @@ will write to the directory `out` so make sure that is empty. `cache.py` parses
 Google Chrome's chache extracting all HTTP headers and cached files. It then
 uncompresses the files and writes them along with their HTTP headers into `out`
 organized by their mime-type. The disk cache format is very complex so I won't
-describe it here. Some of the information can be found in chromium's design documents:
+describe it here. Some of the information can be found in chromium's design
+documents:
 https://www.chromium.org/developers/design-documents/network-stack/disk-cache
 but most was obtained by reading the source code. The most relevant files are
 `net/disk_cache/disk_cache.h`, `net/disk_cache/blockfile/disk_format.h`. The
@@ -199,4 +202,5 @@ simple rundown is that Chrome stores a hash table in `index` and the data in the
 files `data_0`, `data_1`, `data_2`, and `data_3`. Anything that doesn't fit in
 there goes in `f_XXXXXX` where `XXXXXX` is a hexadecimal index. Each `f_` file
 is an entire cached file. The `data` files contain many smaller cache items with
-headers that describe them.
+headers that describe them. This script has only been tested on Ubuntu but
+should, in theory, work on any OS. If you can't get it to work try it on Linux.
